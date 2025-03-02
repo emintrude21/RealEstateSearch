@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Details</title>
+    <link rel="stylesheet" href="{% static 'agent-detail.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container" style="margin-left: 245px;">
+            <div class = "property-card">
+                <div class = "card-content">
+                    <div class = "card-author">
+                        <img src = "{{ agents1.image_url }}" class = "w100" height = "200px" width = "200px">
+                        <div style="display: grid; margin-left: 80px;">
+                            <p class = "author-name">
+                                <a href = "#">{{ agents1.agent_name }}</a>
+                                <br>
+                            </p>
+                            <p class = "author-title">{{ agents1.agency }}</p>
+                            <p class = "author-title" style="margin-top: 8px;">{{ agents1.city }}, {{ agents1.state }}</p>
+                            <a href = "{% url 'inquiry' %}">
+                                <button class = "btn" style = "margin-top: 20px; width: 213px;">Make an Enquiry</button>
+                            </a>
+                        </div>
+                    </div>
+                    <p class = "hero-text" style="height: 30px; margin-top: 30px; margin-bottom: 15px; color: var(--black); display: flex; font-size: 17px; line-height: 1.8;">
+                        <ion-icon style = "margin-right: 7px; margin-left: 0px;" name = "brush-outline"></ion-icon>
+                        <span>About Me: </span>
+                    </p>
+                    <span style="margin-bottom: 20px; margin-top: 20px; font-weight: var(--fw-600); font-size: 18px;"> Specialities: {{ agents1.specialities }}</span>
+                    <span>{{ agents1.about_me }}</span>
+                    <br>
+                    <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2); margin-bottom: 20px;">
+                    <span>broker address: {{ agents1.broker_address }}</span>
+                    <span>cell phone: {{ agents1.cellphone }}</span>
+                    <span>broker phone: {{ agents1.brokerphone }}</span>
+                    <span>screen name: {{ agents1.screenname }}</span>
+                    <span>member since: {{agents1.member_since }}</span>
+                    <span>licenses: {{ agents1.licenses }}</span>
+                    <span>other licenses: {{ agents1.other_licenses }}</span>
+                    <span>Languages: {{ agents1.language1 }}, {{ agents1.langusge2 }}</span>
+                    <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2); margin-bottom: 20px; margin-top: 20px;">
+                    {% for sale in sales %}
+                    <ul>
+                        <li>
+                            <div class = "property-card-1">
+                                <figure class = "card-banner">
+                                    <a href = "{% url 'salepagedetails' sale.id %}">
+                                        <img src = "{{ sale.image_url }}" class = "w-100">
+                                    </a>
+                                    <div class = "card-badge green">For Sale</div>
+                                    <div class = "banner-actions">
+                                        <button class = "banner-actions-btn">
+                                            {% if sale.time_on_zillow %}
+                                            <address>{{ sale.time_on_zillow }} ago</address>
+                                            {% endif %}
+                                        </button>
+                                    </div>
+                                </figure>
+                                <div class = "card-content">
+                                    <div class = "card-price">
+                                        <strong>${{ sale.price }}</strong>
+                                    </div>
+                                    <h3 class = "h3 card-title">
+                                        <a href = "#">{{ sale.address }}</a>
+                                    </h3>
+                                    <p class = "card-text">
+                                        {{ sale.city }}, {{ sale.state }}
+                                    </p>
+                                    <ul class = "card-list">
+                                        <li class = "card-item">
+                                            <ion-icon name = "bed-outline"></ion-icon>
+                                            <strong>{{ sale.beds }}</strong>                                    
+                                            <span>bedrooms</span>
+                                        </li>
+                                        <li class = "card-item">
+                                            <ion-icon name = "leaf-outline"></ion-icon>
+                                            <strong>{{ sale.bathrooms }}</strong>                                    
+                                            <span>bathrooms</span>
+                                        </li>
+                                        <li class = "card-item">
+                                            <ion-icon name = "storefront-outline"></ion-icon>
+                                            <strong>{{ sale.lot_area }}</strong>
+                                            <span>{{ sale.lot_area_unit }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class = "card-footer-1">
+                                    <div class ="card-author-1">
+                                        <div>
+                                            <p class = "author-name-1">
+                                                <a href = "#">{{ sale.broker_name }}</a>
+                                            </p>
+                                            <p class = "author-title-1">Estate Agency</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

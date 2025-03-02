@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs</title>
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class = "blog" id = "blog">
+        <div class = "container">
+            <ul class = "blog-list has-scrollbar">
+                <li>
+                    {% for blog in blogs %}
+                    <div class = "blog-card">
+                        <figure class = "card-banner">
+                            <img src = "{{ blog.image }}" alt = "" class = "w-100">
+                        </figure>
+                        <div class = "blog-content">
+                            <div class = "blog-content-top">
+                                <ul class = "card-meta-list">
+                                    <li>
+                                        <a href = "" class = "card-meta-link">
+                                            <ion-icon name = "pricetags"></ion-icon>
+                                            <span>Investment</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <h3 class = "h3 blog-title">
+                                    <a href = "">{{ blog.title }}</a>
+                                </h3>
+                            </div>
+                            <div class = "blog-content-bottom">
+                                <div class = "publish-date">
+                                    <ion-icon name = "calender"></ion-icon>
+                                    <time datetime = "2022-27-04" style="margin-left: -14px;">Apr 27, 2022</time>
+                                </div>
+                                <a href = "{% url 'blog-detail' %}" class = "read-more-btm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </li>
+            </ul> 
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

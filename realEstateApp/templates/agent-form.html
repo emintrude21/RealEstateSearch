@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %} 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Homes for Sale</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel = "stylesheet" href = "{% static 'search-block.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card" style = "margin-left: 500px; width: 500px; height: 1080px; padding: 30px;">
+                <form method = "POST">
+                {% csrf_token %}
+                    <div>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">State: </span>
+                            <input class="" type="text" name="state" value="{{ form.state.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">City: </span>
+                            <input class="" type="text" name="city" value="{{ form.city.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Agent Name: </span>
+                            <input class="" type="text" name="agent_name" value="{{ form.agent_name.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Agency: </span>
+                            <input class="" type="text" name="agency" value="{{ form.agency.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Specialities: </span>
+                            <input class="" type="text" name="specialities" value="{{ form.specialities.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">About Me: </span>
+                            <input class="" type="text" name="about_me" value="{{ form.about_me.value|default_if_none:'' }}" style="margin-left: 10px; width: 300px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Broker Address: </span>
+                            <input class="" type="text" name="broker_address" value="{{ form.broker_address.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Cellphone: </span>
+                            <input class="" type="text" name="cellphone" value="{{ form.cellphone.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Broker Phone: </span>
+                            <input class="" type="text" name="brokerphone" value="{{ form.brokerphone.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Screen Name: </span>
+                            <input class="" type="text" name="screenname" value="{{ form.screenname.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Licenses: </span>
+                            <input class="" type="text" name="licenses" value="{{ form.licenses.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Other Licenses: </span>
+                            <input class="" type="text" name="other_licenses" value="{{ form.other_licenses.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Language 1: </span>
+                            <input class="" type="text" name="language1" value="{{ form.language1.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Language 2: </span>
+                            <input class="" type="text" name="language2" value="{{ form.language2.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <div style = "display: flex;">
+                            <button class = "btn" type = "submit" style="margin-left: 30px;">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

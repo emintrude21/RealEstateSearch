@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load bootstrap %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Homes Sold</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel = "stylesheet" href = "{% static 'search-block.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    <div id = "center" style = "margin: auto; width: 60%; margin-top: 100px;">
+        <section class = "cta"> 
+            <div class = "cta-card">
+                <div class = "card-content">
+                    <form action = "{% url 'sold-search-results' %}" method = "get" class = "search-form">
+                        <input class = "search" type = "text" name = "query" placeholder = "" aria-label = "Search">
+                        <button id = "button" class = "btn cta-btn" type = "submit" value = "search" style = "bottom: 13px; top: 0px; margin-left: -5px;">
+                            <span>Search Homes</span> 
+                            <ion-icon name = "arrow-forward-outline"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div> 
+        </section>
+    </div>
+
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card" style = "margin-left: 300px; width: 900px; height: 250px; padding: 30px;">
+                <form action = "{% url 'sold-filter' %}" method = "get">
+                    <input type = "hidden" name = "city_query" value = "{{ query }}">
+                    <div style="display: flex;">
+                    <p class = "hero-text" style="display: flex;">
+                        <span style="margin-left: -5px; color: var(--black);">Number of Beds: </span>
+                        <input class = "" type = "number" name = "beds" style="margin-left: 10px;">                   
+                    </p>
+                    <p class = "hero-text" style="display: flex;">
+                        <span style="margin-left: -5px; color: var(--black);">Number of Bathrooms: </span>
+                        <input class = "" type = "number" name = "bathrooms" style="margin-left: 10px;">                   
+                    </p>
+                    </div>
+                    <div style="display: flex;">
+                    <p class = "hero-text" style="display: flex;">
+                        <span style="margin-left: -5px; color: var(--black);">Minimum Price: </span>
+                        <input class = "" type = "number" name = "min_price" style="margin-left: 10px;">                   
+                    </p>
+                    <p class = "hero-text" style="display: flex;">
+                        <span style="margin-left: -5px; color: var(--black);">Maximum Price: </span>
+                        <input class = "" type = "number" name = "max_price" style="margin-left: 10px;">                   
+                    </p>
+                    </div>
+                    <button id = "button" class = "btn cta-btn" type = "submit" style="width: max-content; margin-left: 650px; height: max-content;">Apply Filter</button>
+                </form>
+            </div>
+        </div>
+    </section>
+ 
+    <div id = "center" style = "margin: auto; width: 80%; margin-top: 100px;">
+        <div id = "map">
+            {{ map | safe }}
+        </div>
+    </div>
+
+    <section class = "property" id = "property">
+        <div class = "container">
+            {% for sold1 in sold %}
+            <ul>
+                <li>
+                    <div class = "property-card">
+                        <figure class = "card-banner">
+                            <a href = "{% url 'soldpagedetails' sold1.id %}">
+                                <img src = "{{ sold1.image_url }}" class = "w-100">
+                            </a>
+                            <div class = "card-badge green">Sold</div>
+                            <div class = "banner-actions">
+                                <button class = "banner-actions-btn">
+                                    {% if sold1.time_on_zillow %}
+                                    <address>{{ sold1.time_on_zillow }} ago</address>
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </figure>
+                        <div class = "card-content">
+                            <div class = "card-price">
+                                <strong>${{ sold1.price }}</strong>
+                            </div>
+                            <h3 class = "h3 card-title">
+                                <a href = "#">{{ sold1.address }}</a>
+                            </h3>
+                            <p class = "card-text">
+                                {{ sold1.city }}, {{ sold1.state }}
+                            </p>
+                            <ul class = "card-list">
+                                <li class = "card-item">
+                                    <ion-icon name = "bed-outline"></ion-icon>
+                                    <strong>{{ sold1.beds }}</strong>                                    
+                                    <span>bedrooms</span>
+                                </li>
+                                <li class = "card-item">
+                                    <ion-icon name = "leaf-outline"></ion-icon>
+                                    <strong>{{ sold1.bathrooms }}</strong>                                    
+                                    <span>bathrooms</span>
+                                </li>
+                                <li class = "card-item">
+                                    <ion-icon name = "storefront-outline"></ion-icon>
+                                    <strong>{{ sold1.lot_area }}</strong>
+                                    <span>{{ sold1.lot_area_unit }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class = "card-footer">
+                            <div class ="card-author">
+                                <div>
+                                    <p class = "author-name">
+                                        <a href = "#">{{ sold1.broker_name }}</a>
+                                    </p>
+                                    <p class = "author-title">Estate Agency</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

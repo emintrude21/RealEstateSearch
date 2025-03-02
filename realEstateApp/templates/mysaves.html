@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Saved Sales</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    <h1 style = "margin-top: 30px; margin-left: 30px;">My Saves</h1>
+    <section class = "property" id = "property">
+        <div class = "container">
+            {% for sale in sales %}
+            <ul>
+                <li>
+                    <div class = "property-card">
+                        <figure class = "card-banner">
+                            <a href = "{% url 'salepagedetails' sale.id %}">
+                                <img src = "{{ sale.image_url }}" class = "w-100">
+                            </a>
+                            <div class = "card-badge green">For Sale</div>
+                            <div class = "banner-actions">
+                                <button class = "banner-actions-btn">
+                                    {% if sale.time_on_zillow %}
+                                    <address>{{ sale.time_on_zillow }} ago</address>
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </figure>
+                        <div class = "card-content">
+                            <div class = "card-price">
+                                <strong>${{ sale.price }}</strong>
+                            </div>
+                            <h3 class = "h3 card-title">
+                                <a href = "#">{{ sale.address }}</a>
+                            </h3>
+                            <p class = "card-text">
+                                {{ sale.city }}, {{ sale.state }}
+                            </p>
+                            <ul class = "card-list">
+                                <li class = "card-item">
+                                    <ion-icon name = "bed-outline"></ion-icon>
+                                    <strong>{{ sale.beds }}</strong>                                    
+                                    <span>bedrooms</span>
+                                </li>
+                                <li class = "card-item">
+                                    <ion-icon name = "leaf-outline"></ion-icon>
+                                    <strong>{{ sale.bathrooms }}</strong>                                    
+                                    <span>bathrooms</span>
+                                </li>
+                                <li class = "card-item">
+                                    <ion-icon name = "storefront-outline"></ion-icon>
+                                    <strong>{{ sale.lot_area }}</strong>
+                                    <span>{{ sale.lot_area_unit }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class = "card-footer">
+                            <div class ="card-author">
+                                <div>
+                                    <p class="author-name">
+                                        <a href="#">{{ sale.broker_name }}</a>
+                                    </p>
+                                    <button class="header-bottom-actions-btn" onclick="toggleSave('{{ sale.id }}')" aria-label="My Saves" style="margin-left: 370px; margin-top: -30px;">
+                                        <ion-icon id="saveIcon{{ sale.id }}" name="heart-outline"></ion-icon>
+                                    </button>
+                                    <p class="author-title" style="margin-top: -20px;">Estate Agency</p>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function toggleSave(saleId) 
+        {
+            var saveIcon = document.getElementById("saveIcon" + saleId);
+            var isSaved = saveIcon.classList.contains("heart-full");
+            if(isSaved) 
+            {
+                removeFromDatabase(saleId);
+                saveIcon.classList.remove("heart-full");
+                saveIcon.classList.add("heart-empty");
+                saveIcon.setAttribute("name", "heart-outline");
+            } 
+            else 
+            {
+                addToDatabase(saleId);
+                saveIcon.classList.remove("heart-empty");
+                saveIcon.classList.add("heart-full");
+                saveIcon.setAttribute("name", "heart");
+            }
+        }
+
+        function addToDatabase(saleId) 
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/save_sale/", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            var data = JSON.stringify({ sale_id: saleId });
+            xhr.onreadystatechange = function() 
+            {
+                if(xhr.readyState === 4) 
+                {
+                    if (xhr.status === 200) 
+                    {
+                        console.log("Sale saved successfully:", saleId);
+                    } 
+                    else 
+                    {
+                        console.error("Error saving sale:", xhr.status);
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        function removeFromDatabase(saleId) 
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/save_sale/", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            var data = JSON.stringify({ sale_id: saleId });
+            xhr.onreadystatechange = function() 
+            {
+                if(xhr.readyState === 4) 
+                {
+                    if(xhr.status === 200) 
+                    {
+                        console.log("Sale removed successfully:", saleId);
+                    } 
+                    else 
+                    {
+                        console.error("Error removing sale:", xhr.status);
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        function getCookie(name) 
+        {
+            var cookieValue = null;
+            if(document.cookie && document.cookie !== '') 
+            {
+                var cookies = document.cookie.split(';');
+                for(var i = 0; i < cookies.length; i++) 
+                {
+                    var cookie = cookies[i].trim();
+                    if(cookie.substring(0, name.length + 1) === (name + '=')) 
+                    {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        window.onload = function() 
+        {
+            checkSavedSales();
+        };
+
+        function checkSavedSales() 
+        {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/get_saved_sales/", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() 
+            {
+                if(xhr.readyState === 4) 
+                {
+                    if(xhr.status === 200) 
+                    {
+                        var savedSales = JSON.parse(xhr.responseText);
+                        for(var i = 0; i < savedSales.length; i++) 
+                        {
+                            var saleId = savedSales[i];
+                            var saveIcon = document.getElementById("saveIcon" + saleId);
+                            if(saveIcon) 
+                            {
+                                saveIcon.classList.remove("heart-empty");
+                                saveIcon.classList.add("heart-full");
+                                saveIcon.setAttribute("name", "heart");
+                            }
+                        }
+                    } 
+                    else 
+                    {
+                        console.error("Error getting saved sales:", xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

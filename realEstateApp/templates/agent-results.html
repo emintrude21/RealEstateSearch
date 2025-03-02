@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load bootstrap %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Homes for Sale</title>
+    <link rel="stylesheet" href="{% static 'agent-detail.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id = "center" style = "margin: auto; width: 60%; margin-top: 100px;">
+        <section class = "cta"> 
+            <div class = "cta-card">
+                <div class = "card-content">
+                    <form action = "{% url 'agent-results' %}" method = "get" class = "search-form">
+                        <input class = "search" type = "text" name = "query" placeholder = "" aria-label = "Search">
+                        <button id = "button" class = "btn cta-btn" type = "submit" value = "search" style = "bottom: 13px; top: 0px; margin-left: -2px;">
+                            <span>Search Agents</span> 
+                            <ion-icon name = "arrow-forward-outline"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div> 
+        </section>
+    </div>
+    <div id = "center" style = "margin-top: 0px; margin-left: 240px;">
+    <section class = "property" id = "property">
+        <div class = "container">
+            {% for agent in agents %}
+            <div class = "property-card" style="margin-left: 0px;">
+                <div class = "card-content">
+                    <div class = "card-author">
+                        <a href = "{% url 'agent-details' agent.agent_name %}">
+                            <img src = "{{ agent.image_url }}" class = "w100" height = "150px" width = "150px">
+                        </a>
+                        <div style="display: grid; margin-left: 30px;">
+                        <p class = "author-name">
+                            <a href = "#">{{ agent.agent_name }}</a>
+                            <br>
+                        </p>
+                        <p class = "author-title">{{ agent.agency }}</p>
+                        </div>
+                        <div style="display: grid; margin-left: 30px; margin-right: 0px; margin-top: 0px;">
+                            <p class = "author-name">
+                                <a href = "#">{{ agent.specialities }}</a>
+                                <br>
+                            </p>
+                            <p class = "author-title">{{ agent.city }}, {{ agent.state }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

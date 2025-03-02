@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Details</title>
+    <link rel="stylesheet" href="{% static 'detail.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card">
+                <figure class = "card-banner">
+                    <a href = "#">
+                        <img src = "{{ sold1.image_url }}" class = "w100">
+                    </a>
+                    <div class = "card-badge green">Sold</div>
+                    <div class = "banner-actions">
+                        <button class = "banner-actions-btn">
+                            {% if sold1.time_on_zillow %}
+                            <address>{{ sold1.time_on_zillow }} ago</address>
+                            {% endif %}
+                        </button>
+                    </div>
+                </figure>
+                <div class = "card-content">
+                    <div class = "card-badge-s green" style = "margin-bottom: 10px;">{{ sold1.status_text }}</div>
+                    <div class = "card-price">
+                        <strong>${{ sold1.price }}</strong>
+                    </div>
+                    <h3 class = "h3 card-title">
+                        <a href = "#">{{ sold1.address }}</a> 
+                    </h3>
+                    <p class = "card-text">
+                        {{ sold1.city }}, {{ sold1.state }}
+                    </p>
+                    <div class="hero-text-block">
+                        <div class="hero-text-container">
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "bed-outline"></ion-icon>
+                                <span>bedrooms: {{ sold1.beds }}</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "leaf-outline"></ion-icon>
+                                <span>bathrooms: {{ sold1.bathrooms }}</span>
+                            </p>
+                        </div>
+                        <div>
+                        <div class = "card-author">
+                            <p class = "author-name">
+                                <a href = "#">{{ sold1.broker_name }}</a>
+                            </p>
+                            <p class = "author-title">Estate Agency</p>
+                            <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2);">
+                            <a href = "{% url 'inquiry-sold' sold1.id %}">
+                            <button class = "btn" style = "margin-top: 10px;">Make an Enquiry</button>
+                            </a>                                               
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

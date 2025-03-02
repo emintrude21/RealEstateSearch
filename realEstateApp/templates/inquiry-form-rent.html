@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Homes for Sale</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel = "stylesheet" href = "{% static 'search-block.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card" style = "margin-left: 500px; width: 500px; height: 320px; padding: 30px;">
+                <form method = "POST">
+                {% csrf_token %}
+                    <div>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Name: </span>
+                            <input class="" type="text" name="name" value="{{ form.name.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Message: </span>
+                            <textarea name="message" style="margin-left: 10px; width: 500px; height: 100px;" id="id_message">{{ form.message.value|default_if_none:'' }}</textarea>
+                        </p>
+                        <div style = "display: flex;">
+                            <button class = "btn" type = "submit" style="margin-left: 30px;">Send Inquiry</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

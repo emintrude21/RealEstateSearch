@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Details</title>
+    <link rel="stylesheet" href="{% static 'detail.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card">
+                <figure class = "card-banner">
+                    <a href = "#">
+                        <img src = "{{ sales1.image_url }}" class = "w100">
+                    </a>
+                    <div class = "card-badge green">For Sale</div>
+                    <div class = "banner-actions">
+                        <button class = "banner-actions-btn">
+                            {% if sales1.time_on_zillow %}
+                            <address>{{ sales1.time_on_zillow }} ago</address>
+                            {% endif %}
+                        </button>
+                    </div>
+                </figure>
+                <div class = "card-content">
+                    <div class = "card-badge-s green" style = "margin-bottom: 10px;">{{ sales1.status_text }}</div>
+                    <div class = "card-price">
+                        <strong>${{ sales1.price }}</strong>
+                    </div>
+                    <h3 class = "h3 card-title">
+                        <a href = "#">{{ sales1.address }}</a> 
+                    </h3>
+                    <p class = "card-text">
+                        {{ sales1.city }}, {{ sales1.state }}
+                    </p>
+                    <div class="hero-text-block">
+                        <div class="hero-text-container">
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "hammer-outline"></ion-icon>
+                                <span>built in: {{ sales1.built_in }}</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "cash-outline"></ion-icon>
+                                <span>estimated payment: ${{ sales1.est_pay }} / month</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "home-outline"></ion-icon>
+                                <span>type of residence: {{ sales1.residence_type }}</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "bed-outline"></ion-icon>
+                                <span>bedrooms: {{ sales1.beds }}</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "leaf-outline"></ion-icon>
+                                <span>bathrooms: {{ sales1.bathrooms }}</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "expand-outline"></ion-icon>
+                                <span>area: {{ sales1.area }} sqft</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "resize-outline"></ion-icon>
+                                <span>price per sqft: {{ sales1.price_per_sqft }} / sqft</span>
+                            </p>
+                            <p class = "hero-text">
+                                <ion-icon style = "margin-right: 5px;" name = "storefront-outline"></ion-icon>
+                                <span>lot area: {{ sales1.lot_area }} {{ sales1.lot_area_unit }}</span>
+                            </p>
+                        </div>
+                        <div>
+                        <div class = "card-author">
+                            <p class = "author-name">
+                                <a href = "#">{{ sales1.broker_name }}</a>
+                            </p>
+                            <p class = "author-title">Estate Agency</p>
+                            <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2);">
+                            <a href = "{% url 'inquiry-sale' sales1.id %}">
+                            <button class = "btn" style = "margin-top: 10px;">Make an Enquiry</button>  
+                            </a>                                                
+                        </div>
+                        <div class = "card-author">
+                            <p class = "author-name">
+                                <a href = "#">Open House</a>
+                            </p>
+                            <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2);">   
+                            <p class = "author-title" style = "margin-top: 10px">{{ sales1.openhousedate }}</p>
+                            <p class = "author-title">{{ sales1.openhousetime }}</p>                                         
+                        </div>
+                        </div>
+                    </div>
+                    <p class = "hero-text">
+                        <ion-icon style = "margin-right: 5px;" name = "brush-outline"></ion-icon>
+                        <span>description: </span>
+                    </p>
+                    <span>{{ sales1.description }}</span>
+                    <div id = "center" style = "margin-left: -5px; margin-right: -5px; width: 105%; margin-top: 40px;">
+                        <div id = "map">
+                            {{ map_html | safe }}
+                        </div>
+                    </div>
+                    <p class = "author-name" style = "margin-top: 40px; font-size: 25px;">Facts and Features</p>
+                    <div class = "card-badge-m purple" style = "margin-top: 20px; margin-bottom: 20px;">Interior</div>
+                    <div class = "facts-container" style="display: flex; justify-content: space-between;">
+                    <div class = "facts-block-1">
+                    <p style = "font-size: 20px; margin-bottom: 15px;">Bedrooms and Bathrooms</p>
+                    <p style = "margin-bottom: 5px;"> - Bedrooms: {{ sales1.beds }}</p>
+                    <p style = "margin-bottom: 5px;"> - Bathrooms: {{ sales1.bathrooms }}</p>
+                    {% if sales1.full_bathroom %}
+                    <p style = "margin-bottom: 5px;">- Full Bathrooms: {{ sales1.full_bathroom }}</p>
+                    {% endif %}
+                    {% if sales1.half_bathroom %}
+                    <p>- Full Bathrooms: {{ sales1.half_bathroom }}</p>
+                    {% endif %}
+                    {% if sales1.basement %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Basement</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.basement }}</p>
+                    {% if sales1.basement2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.basement2 }}</p>
+                    {% endif %}
+                    {% endif %}
+                    {% if sales1.flooring %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Flooring</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.flooring }}</p>
+                    {% endif %}
+                    {% if sales1.heating %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Heating</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.heating }}</p>
+                    {% endif %}
+                    {% if sales1.cooling %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Cooling</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.cooling }}</p>
+                    {% endif %}
+                    </div>
+                    <div class = "facts-block-2">
+                        {% if sales1.appliances %}
+                        <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Appliances</p>
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.appliances }}</p>
+                        {% endif %}
+                        {% if sales1.interior_features %}
+                        <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Other Interior Features</p>
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.interior_features }}</p>
+                        {% if sales1.inte1 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.inte1 }}</p>
+                        {% endif %}
+                        {% if sales1.inte2 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.inte2 }}</p>
+                        {% endif %}
+                        {% if sales1.inte3 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.inte3 }}</p>
+                        {% endif %}
+                        {% if sales1.inte4 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.inte4 }}</p>
+                        {% endif %} 
+                        {% endif %}
+                    </div>
+                    </div>
+                    </div>
+                    <div class = "card-badge-m green" style = "margin-top: 20px; margin-bottom: 20px;">Property</div>
+                    <div class = "facts-container" style="display: flex; justify-content: space-between;">
+                    <div class = "facts-block-1">
+                    {% if sales1.parking %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Parking</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.parking }}</p>
+                    {% if sales1.park1 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.park1 }}</p>
+                    {% endif %}
+                    {% if sales1.park2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.park2 }}</p>
+                    {% endif %}
+                    {% if sales1.park3 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.park3 }}</p>
+                    {% endif %}
+                    {% if sales1.park4 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.park4 }}</p>
+                    {% endif %}
+                    {% endif %}
+                    {% if sales1.property %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Property</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.property }}</p>
+                    {% endif %}
+                    {% if sales1.prop1 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.prop1 }}</p>
+                    {% endif %}
+                    {% if sales1.prop2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.prop2 }}</p>
+                    {% endif %}
+                    {% if sales1.prop3 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.prop3 }}</p>
+                    {% endif %}
+                    {% if sales1.prop4 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.prop4 }}</p>
+                    {% endif %}
+                    </div>
+                    <div class = "facts-block-2">
+                        {% if sales1.lot %}
+                        <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Lot</p>
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.lot }}</p>
+                        {% endif %}
+                    </div>
+                    </div>
+                    <div class = "card-badge-m green" style = "margin-top: 20px; margin-bottom: 20px;">Construction</div>
+                    <div class = "facts-container" style="display: flex; justify-content: space-between;">
+                    <div class = "facts-block-1">
+                    {% if sales1.construction_type %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Type and Style</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.construction_type }}</p>
+                    {% if sales1.constype1 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.constype1 }}</p>
+                    {% endif %}
+                    {% if sales1.constype2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.constype2 }}</p>
+                    {% endif %}
+                    {% endif %}
+                    {% if sales1.built_in %}
+                        <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Condition</p>
+                        <p style = "margin-bottom: 5px;"> - Year Built: {{ sales1.built_in }}</p>
+                    {% endif %}
+                    </div>
+                    <div class = "facts-block-2">
+                        {% if sales1.material %}
+                        <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Material Information</p>
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.material }}</p>
+                        {% if sales1.material1 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.material1 }}</p>
+                        {% endif %}
+                        {% if sales1.material2 %}
+                        <p style = "margin-bottom: 5px;"> - {{ sales1.material2 }}</p>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    </div>
+                    <div class = "card-badge-m green" style = "margin-top: 20px; margin-bottom: 20px;">Utilities and Green Energy</div>
+                    <div class = "facts-container" style="display: flex; justify-content: space-between;">
+                    <div class = "facts-block-1">
+                    {% if sales1.utility %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Utility</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.utility }}</p>
+                    {% if sales1.utility1 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.utility1 }}</p>
+                    {% endif %}
+                    {% if sales1.utility2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.utility2 }}</p>
+                    {% endif %}
+                    {% if sales1.utility3 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.utility3 }}</p>
+                    {% endif %}
+                    {% if sales1.utility4 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.utility4 }}</p>
+                    {% endif %}
+                    {% endif %}
+                    </div>
+                    </div>
+                    <div class = "card-badge-m green" style = "margin-top: 20px; margin-bottom: 20px;">Community and Neighbourhood</div>
+                    <div class = "facts-container" style="display: flex; justify-content: space-between;">
+                    <div class = "facts-block-1">
+                    {% if sales1.location %}
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 0px;">Location</p>
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.location }}</p>
+                    {% endif %}
+                    {% if sales1.community %}
+                    {% if sales1.community %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.community }}</p>
+                    {% endif %}
+                    {% if sales1.community1 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.community1 }}</p>
+                    {% endif %}
+                    {% if sales1.community2 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.community2 }}</p>
+                    {% endif %}
+                    {% if sales1.community3 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.community3 }}</p>
+                    {% endif %}
+                    {% if sales1.community4 %}
+                    <p style = "margin-bottom: 5px;"> - {{ sales1.community4 }}</p>
+                    {% endif %}
+                    {% endif %}
+                    </div>
+                    </div>
+                    <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2); margin-top: 20px;">
+                    <p style = "font-size: 20px; margin-bottom: 15px; margin-top: 20px;">Getting Around</p>
+                    <ul class="card-list">
+                        {% if sales1.walk_score %}
+                        <li class="card-item">
+                          <p style = "margin-bottom: 5px;"><strong>Walk Score</strong></p>
+                          <ion-icon name="walk-outline"></ion-icon>
+                          <strong>{{ sales1.walk_score }} / 100</strong>
+                          <span>{{ sales1.walk_status }}</span>
+                        </li>
+                        {% endif %}
+                        {% if sales1.bike_score %}
+                        <li class="card-item">
+                          <p style = "margin-bottom: 5px;"><strong>Bike Score</strong></p>
+                          <ion-icon name="bicycle-outline"></ion-icon>
+                          <strong>{{ sales1.bike_score }} / 100</strong>
+                          <span>{{ sales1.bike_status }}</span>
+                        </li>
+                        {% endif %}
+                        {% if sales1.transit_score %}
+                        <li class="card-item">
+                          <p style = "margin-bottom: 5px;"><strong>Transit Score</strong></p>
+                          <ion-icon name="train-outline"></ion-icon>
+                          <strong>{{ sales1.transit_score }} / 100</strong>
+                          <span>{{ sales1.transit_status }}</span>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

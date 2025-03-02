@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Listings</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel = "stylesheet" href = "{% static 'search-block.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class = "property" id = "property">
+        <div class = "container">
+            <div class = "property-card" style = "margin-left: 500px; width: 500px; height: 2820px; padding: 30px;">
+                <form method = "POST">
+                {% csrf_token %}
+                    <div>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Status Type: </span>
+                            <input class="" type="text" name="status_type" value="{{ form.status_type.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Status Text: </span>
+                            <input class="" type="text" name="status_text" value="{{ form.status_text.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Price: </span>
+                            <input class="" type="text" name="price" value="{{ form.price.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Area: </span>
+                            <input class="" type="text" name="area" value="{{ form.area.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Price Per Sqft: </span>
+                            <input class="" type="text" name="price_per_sqft" value="{{ form.price_per_sqft.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Lot Area: </span>
+                            <input class="" type="text" name="lot_area" value="{{ form.lot_area.value|default_if_none:'' }}" style="margin-left: 10px; width: 300px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Lot Area Unit: </span>
+                            <input class="" type="text" name="lot_area_unit" value="{{ form.lot_area_unit.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Beds: </span>
+                            <input class="" type="text" name="beds" value="{{ form.beds.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Bathrooms: </span>
+                            <input class="" type="text" name="bathrooms" value="{{ form.bathrooms.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Address: </span>
+                            <input class="" type="text" name="address" value="{{ form.address.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Street: </span>
+                            <input class="" type="text" name="street" value="{{ form.street.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">City: </span>
+                            <input class="" type="text" name="city" value="{{ form.city.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">State: </span>
+                            <input class="" type="text" name="state" value="{{ form.state.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Zipcode: </span>
+                            <input class="" type="text" name="zipcode" value="{{ form.zipcode.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Latitude: </span>
+                            <input class="" type="text" name="latitude" value="{{ form.latitude.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Longitude: </span>
+                            <input class="" type="text" name="longitude" value="{{ form.longitude.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Broker Name: </span>
+                            <input class="" type="text" name="broker_name" value="{{ form.broker_name.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Image: </span>
+                            <input class="" type="text" name="image_url" value="{{ form.image_url.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Description: </span>
+                            <input class="" type="text" name="description" value="{{ form.description.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Built In: </span>
+                            <input class="" type="text" name="built_in" value="{{ form.built_in.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Estimated Payment: </span>
+                            <input class="" type="text" name="est_pay" value="{{ form.est_pay.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Residence Type: </span>
+                            <input class="" type="text" name="residence_type" value="{{ form.residence_type.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Full Bathroom: </span>
+                            <input class="" type="text" name="full_bathroom" value="{{ form.full_bathroom.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Half Bathroom: </span>
+                            <input class="" type="text" name="half_bathroom" value="{{ form.half_bathroom.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Basement: </span>
+                            <input class="" type="text" name="basement" value="{{ form.basement.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Flooring: </span>
+                            <input class="" type="text" name="flooring" value="{{ form.flooring.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Heating: </span>
+                            <input class="" type="text" name="heating" value="{{ form.heating.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Cooling: </span>
+                            <input class="" type="text" name="cooling" value="{{ form.cooling.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Appliances: </span>
+                            <input class="" type="text" name="appliances" value="{{ form.appliances.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Interior Features: </span>
+                            <input class="" type="text" name="interior_features" value="{{ form.interior_features.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Parking: </span>
+                            <input class="" type="text" name="parking" value="{{ form.parking.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Property: </span>
+                            <input class="" type="text" name="property" value="{{ form.property.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Lot: </span>
+                            <input class="" type="text" name="lot" value="{{ form.lot.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Construction Type: </span>
+                            <input class="" type="text" name="construction_type" value="{{ form.construction_type.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Material: </span>
+                            <input class="" type="text" name="material" value="{{ form.material.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Utility: </span>
+                            <input class="" type="text" name="utility" value="{{ form.utilitye.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Community: </span>
+                            <input class="" type="text" name="community" value="{{ form.community.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Location: </span>
+                            <input class="" type="text" name="location" value="{{ form.location.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Agency Fee: </span>
+                            <input class="" type="text" name="agency_fee" value="{{ form.agency_fee.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <p class="hero-text" style="display: flex; margin-left: 30px;">
+                            <span style="margin-left: -5px; color: var(--black);">Agent Email: </span>
+                            <input class="" type="text" name="agent_email" value="{{ form.agent_email.value|default_if_none:'' }}" style="margin-left: 10px;" id="id_state">
+                        </p>
+                        <div style = "display: flex;">
+                            <button class = "btn" type = "submit" style="margin-left: 30px;">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

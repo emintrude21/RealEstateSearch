@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load bootstrap %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Account</title>
+    <link rel="stylesheet" href="{% static 'agent-detail.css' %}">
+    <link rel="shortcut icon" href="{% static 'static/favicon.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% if messages %}
+        <ul class = "messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if user %}
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <div style = "display: flex;">
+                <a href = "{% url 'logoutpage' %}">
+                <button class = "btn" style = "margin-left: 1360px; margin-top: 40px;" type = "submit">Logout</button>
+                </a>
+            </div>
+            <section class = "property" id = "property">
+                <div class = "container" style="margin-left: 150px;">
+                    <div class = "property-card" style = "width: 1000px;">
+                        <div class = "card-content">
+                            <div class = "card-author">
+                                <img src = "{{ agents.image_url }}" class = "w100" height = "200px" width = "200px">
+                                <div style="display: grid; margin-left: 80px;">
+                                    <p class = "author-name">
+                                        <a href = "#">{{ agents.agent_name }}</a>
+                                        <br>
+                                    </p>
+                                    <p class = "author-title">{{ agents.agency }}</p>
+                                    <p class = "author-title" style="margin-top: 8px;">{{ agents.city }}, {{ agents.state }}</p>
+                                </div>
+                            </div>
+                            <p class = "hero-text" style="height: 30px; margin-top: 30px; margin-bottom: 15px; color: var(--black); display: flex; font-size: 17px; line-height: 1.8;">
+                                <ion-icon style = "margin-right: 7px; margin-left: 0px;" name = "brush-outline"></ion-icon>
+                                <span>About Me: </span>
+                            </p>
+                            <span style="margin-bottom: 20px; margin-top: 20px; font-weight: var(--fw-600); font-size: 18px;"> Specialities: {{ agents.specialities }}</span>
+                            <span>{{ agents.about_me }}</span>
+                            <br>
+                            <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2); margin-bottom: 20px;">
+                            <span>broker address: {{ agents.broker_address }}</span>
+                            <span>cell phone: {{ agents.cellphone }}</span>
+                            <span>broker phone: {{ agents.brokerphone }}</span>
+                            <span>screen name: {{ agents.screenname }}</span>
+                            <span>member since: {{agents.member_since }}</span>
+                            <span>licenses: {{ agents.licenses }}</span>
+                            <span>other licenses: {{ agents.other_licenses }}</span>
+                            <span>Languages: {{ agents.language1 }}, {{ agents.langusge2 }}</span>
+                            <hr style = "border-right: 1px solid hsla(0, 0%, 0%, 0.2); margin-bottom: 20px; margin-top: 20px;">
+                            <a href = "/account/{{ agents.id }}/">
+                                <button id = "button" class = "btn cta-btn" type = "submit" style="width: max-content; margin-left: 650px; height: max-content; margin-top: 20px;">Edit Profile Data</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                <a href = "{% url 'add-new-listing' %}">
+                    <button id = "button" class = "btn cta-btn" type = "submit" style="width: max-content; margin-left: 650px; height: max-content;">Add New Listing</button>
+                </a>
+                {% if sales %}
+                <section class = "property" id = "property">
+                    <div class = "container">
+                        {% for sale in sales %}
+                        <ul>
+                            <li>
+                                <div class = "property-card" style="width: 492px; margin-left: 0px;">
+                                    <figure class = "card-banner">
+                                        <a href = "{% url 'salepagedetails' sale.id %}">
+                                            <img src = "{{ sale.image_url }}" class = "w-100">
+                                        </a>
+                                        <div class = "card-badge green">For Sale</div>
+                                        <div class = "banner-actions">
+                                            <button class = "banner-actions-btn">
+                                                {% if sale.time_on_zillow %}
+                                                <address>{{ sale.time_on_zillow }} ago</address>
+                                                {% endif %}
+                                            </button>
+                                        </div>
+                                    </figure>
+                                    <div class = "card-content">
+                                        <div class = "card-price">
+                                            <strong>${{ sale.price }}</strong>
+                                        </div>
+                                        <h3 class = "h3 card-title">
+                                            <a href = "#">{{ sale.address }}</a>
+                                        </h3>
+                                        <p class = "card-text">
+                                            {{ sale.city }}, {{ sale.state }}
+                                        </p>
+                                        <ul class = "card-list">
+                                            <li class = "card-item">
+                                                <ion-icon name = "bed-outline"></ion-icon>
+                                                <strong>{{ sale.beds }}</strong>                                    
+                                                <span>bedrooms</span>
+                                            </li>
+                                            <li class = "card-item">
+                                                <ion-icon name = "leaf-outline"></ion-icon>
+                                                <strong>{{ sale.bathrooms }}</strong>                                    
+                                                <span>bathrooms</span>
+                                            </li>
+                                            <li class = "card-item">
+                                                <ion-icon name = "storefront-outline"></ion-icon>
+                                                <strong>{{ sale.lot_area }}</strong>
+                                                <span>{{ sale.lot_area_unit }}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class = "card-footer">
+                                        <div class ="card-author">
+                                            <div>
+                                                <p class="author-name">
+                                                    <a href="#">{{ sale.broker_name }}</a>
+                                                </p>
+                                                <a href = "/editsales/{{ sale.id }}/">
+                                                    <button id = "button" class = "btn cta-btn" type = "submit" style="width: max-content; margin-left: 310px; height: max-content; margin-top: -30px;">Edit</button>
+                                                </a>
+                                                <a href = "/delete/{{ sale.id }}/">
+                                                    <button id = "button" class = "btn cta-btn" type = "submit" style="width: max-content; margin-left: 310px; height: max-content; margin-top: 5px;">Delete</button>
+                                                </a>
+                                            </div>                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+            {% else %}
+            <div style = "display: flex;">
+                <a href = "{% url 'logoutpage' %}">
+                <button class = "btn" style = "margin-left: 1360px; margin-top: 40px;" type = "submit">Logout</button>
+                </a>
+            </div>
+                <section class = "property" id = "property">
+                    <div class = "container" style="margin-left: 400px;">
+                        <div class = "property-card" style = "width: 520px;">
+                            <div class = "card-content">
+                                <div class = "card-author">
+                                    <div style="display: grid; margin-left: 80px;">
+                                        <p class = "author-name">
+                                            <a href = "#">Welcome, {{ user.username }}!</a>
+                                            <br>
+                                        </p>
+                                        <p class = "author-title">Name: {{ user.first_name }} {{ user.last_name }}</p>
+                                        <p class = "author-title">Email: {{ user.email }}</p>
+                                        <p class = "author-title">Last Login: {{ user.last_login }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</body>
+</html>
